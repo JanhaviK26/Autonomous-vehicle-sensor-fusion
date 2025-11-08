@@ -1,0 +1,78 @@
+# Segmentation Model Configuration
+model:
+  name: "deeplabv3plus"
+  architecture:
+    backbone: "resnet50"
+    num_classes: 2  # Background + Drivable
+    input_channels: 4  # RGB + Depth
+    
+  # Loss function
+  loss:
+    type: "focal"  # or "cross_entropy", "dice"
+    alpha: 0.25
+    gamma: 2.0
+    weight: 1.0
+  
+  # Regularization
+  dropout: 0.1
+  weight_decay: 1e-4
+
+# Training configuration
+training:
+  batch_size: 8
+  epochs: 150
+  learning_rate: 1e-4
+  scheduler: "poly"
+  
+  # Early stopping
+  patience: 20
+  min_delta: 0.001
+  
+  # Mixed precision
+  use_amp: true
+  
+  # Checkpointing
+  save_best: true
+  save_last: true
+  checkpoint_dir: "models/segmentation"
+
+# Data configuration
+data:
+  train_path: "data/processed/train"
+  val_path: "data/processed/val"
+  test_path: "data/processed/test"
+  
+  # Data loading
+  num_workers: 4
+  pin_memory: true
+  
+  # Preprocessing settings (needed for DataFusion)
+  depth_max: 80.0
+  image_size: [256, 256]
+  camera_id: 2
+  
+  # Augmentation
+  augmentation:
+    horizontal_flip: 0.5
+    rotation_range: 15
+    brightness_range: 0.3
+    contrast_range: 0.3
+    elastic_transform: true
+
+# Preprocessing configuration
+preprocessing:
+  normalize_depth: true
+  normalize_rgb: true
+
+# Evaluation metrics
+evaluation:
+  metrics:
+    - "iou"
+    - "f1"
+    - "pixel_accuracy"
+    - "dice"
+  
+  # Visualization
+  save_predictions: true
+  num_samples: 50
+  class_names: ["Background", "Drivable"]

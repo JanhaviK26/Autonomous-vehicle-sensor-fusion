@@ -1,0 +1,11 @@
+{
+  "rmse": 0.012,
+  "mae": 0.008,
+  "delta1": 0.996,
+  "delta2": 0.998,
+  "delta3": 0.999,
+  "epoch": 5,
+  "val_loss": 0.0163,
+  "train_loss": 0.0163,
+  "best_epoch": 5
+}

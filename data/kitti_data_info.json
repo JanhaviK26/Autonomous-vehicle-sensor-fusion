@@ -1,0 +1,38 @@
+{
+  "kitti_dataset_structure": {
+    "description": "Expected KITTI dataset structure for sensor fusion",
+    "required_files": {
+      "images": {
+        "path": "training/image_2/",
+        "format": "PNG",
+        "description": "Left color camera images",
+        "example": "000000.png, 000001.png, ..."
+      },
+      "lidar": {
+        "path": "training/velodyne/",
+        "format": "BIN",
+        "description": "Velodyne LiDAR point clouds",
+        "example": "000000.bin, 000001.bin, ..."
+      },
+      "calibration": {
+        "path": "training/calib/",
+        "format": "TXT",
+        "description": "Camera-LiDAR calibration parameters",
+        "example": "000000.txt, 000001.txt, ..."
+      }
+    },
+    "file_correspondence": {
+      "description": "Files with same number correspond to same scene",
+      "example": "000000.png + 000000.bin + 000000.txt = one scene"
+    }
+  },
+  "download_instructions": {
+    "website": "http://www.cvlibs.net/datasets/kitti/",
+    "required_downloads": [
+      "data_object_image_2.zip (training images)",
+      "data_object_velodyne.zip (training LiDAR)",
+      "data_object_calib.zip (training calibration)"
+    ],
+    "extraction": "Extract all zip files and run organize_kitti_data()"
+  }
+}

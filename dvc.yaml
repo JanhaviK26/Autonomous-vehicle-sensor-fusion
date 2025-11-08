@@ -1,0 +1,105 @@
+# DVC Pipeline Configuration
+# This file defines the complete MLOps pipeline for sensor fusion
+
+stages:
+  # Data preprocessing stage
+  preprocess:
+    cmd: python src/data/preprocess.py --config configs/preprocessing.yaml
+    deps:
+    - src/data/preprocess.py
+    - configs/preprocessing.yaml
+    - data/raw/kitti
+    outs:
+    - data/processed/train
+    - data/processed/val
+    - data/processed/test
+    metrics:
+    - metrics/preprocessing.json
+    plots:
+    - plots/preprocessing.png
+
+  # Depth prediction training
+  train_depth:
+    cmd: python src/training/train.py --config configs/depth_model.yaml --model_type depth
+    deps:
+    - src/training/train.py
+    - src/models/architectures.py
+    - src/models/losses.py
+    - src/data/dataset.py
+    - configs/depth_model.yaml
+    - data/processed/train
+    - data/processed/val
+    outs:
+    - models/depth_prediction/best_checkpoint.pth
+    - models/depth_prediction/last_checkpoint.pth
+    metrics:
+    - metrics/depth_training.json
+    plots:
+    - plots/depth_training.png
+    - plots/depth_predictions.png
+
+  # Segmentation training
+  train_segmentation:
+    cmd: python src/training/train.py --config configs/segmentation_model.yaml --model_type segmentation
+    deps:
+    - src/training/train.py
+    - src/models/architectures.py
+    - src/models/losses.py
+    - src/data/dataset.py
+    - configs/segmentation_model.yaml
+    - data/processed/train
+    - data/processed/val
+    outs:
+    - models/segmentation/best_checkpoint.pth
+    - models/segmentation/last_checkpoint.pth
+    metrics:
+    - metrics/segmentation_training.json
+    plots:
+    - plots/segmentation_training.png
+    - plots/segmentation_predictions.png
+
+  # Model evaluation
+  evaluate_depth:
+    cmd: python src/evaluation/evaluate.py --config configs/depth_model.yaml --model models/depth_prediction/best_checkpoint.pth --model_type depth
+    deps:
+    - src/evaluation/evaluate.py
+    - models/depth_prediction/best_checkpoint.pth
+    - data/processed/test
+    metrics:
+    - metrics/depth_evaluation.json
+    plots:
+    - plots/depth_evaluation.png
+
+  evaluate_segmentation:
+    cmd: python src/evaluation/evaluate.py --config configs/segmentation_model.yaml --model models/segmentation/best_checkpoint.pth --model_type segmentation
+    deps:
+    - src/evaluation/evaluate.py
+    - models/segmentation/best_checkpoint.pth
+    - data/processed/test
+    metrics:
+    - metrics/segmentation_evaluation.json
+    plots:
+    - plots/segmentation_evaluation.png
+
+  # Model comparison
+  compare_models:
+    cmd: python src/evaluation/compare.py --configs configs/depth_model.yaml configs/segmentation_model.yaml --models models/depth_prediction/best_checkpoint.pth models/segmentation/best_checkpoint.pth
+    deps:
+    - src/evaluation/compare.py
+    - models/depth_prediction/best_checkpoint.pth
+    - models/segmentation/best_checkpoint.pth
+    - data/processed/test
+    metrics:
+    - metrics/model_comparison.json
+    plots:
+    - plots/model_comparison.png
+
+  # Generate report
+  generate_report:
+    cmd: python src/utils/generate_report.py --metrics metrics/ --plots plots/ --output reports/
+    deps:
+    - src/utils/generate_report.py
+    - metrics/
+    - plots/
+    outs:
+    - reports/model_performance_report.html

@@ -1,0 +1,10 @@
+{
+  "iou": 0.78,
+  "f1": 0.86,
+  "pixel_accuracy": 0.91,
+  "dice": 0.88,
+  "epoch": 5,
+  "train_loss": 0.1301,
+  "best_loss": 0.1301,
+  "best_epoch": 5
+}

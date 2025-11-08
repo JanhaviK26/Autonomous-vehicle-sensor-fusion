@@ -1,0 +1,39 @@
+# Data Preprocessing Configuration
+data:
+  # Paths
+  kitti_path: "data/raw/kitti"
+  output_path: "data/processed"
+  calibration_path: "data/calibration"
+  
+  # Image settings
+  image_size: [256, 256]
+  depth_max: 80.0  # meters
+  
+  # LiDAR settings
+  lidar_height: 1.73  # meters above ground
+  lidar_range: [0, 80]  # meters
+  
+  # Camera settings
+  camera_id: 2  # Left color camera
+  
+  # Data split
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+
+# Preprocessing options
+preprocessing:
+  # Depth image generation
+  depth_method: "spherical_projection"  # or "planar_projection"
+  depth_resolution: 0.1  # meters per pixel
+  
+  # Data augmentation
+  augmentation:
+    horizontal_flip: true
+    rotation_range: 5  # degrees
+    brightness_range: 0.2
+    contrast_range: 0.2
+  
+  # Normalization
+  normalize_depth: true
+  normalize_rgb: true
