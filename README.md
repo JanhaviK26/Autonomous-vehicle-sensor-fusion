@@ -120,47 +120,4 @@ streamlit run dashboard/app.py
 | RGB Only | 0.72 | 0.84 | 0.89 |
 | RGB + LiDAR | 0.81 | 0.90 | 0.94 |
 
-## 🛠️ Development
 
-### Running Tests
-```bash
-pytest tests/
-```
-
-### Code Formatting
-```bash
-black src/
-flake8 src/
-```
-
-### Adding New Models
-1. Create model class in `src/models/`
-2. Add training script in `src/training/`
-3. Update configuration files
-4. Add evaluation metrics
-
-## 📈 Future Enhancements
-
-- [ ] Real-time inference optimization
-- [ ] Multi-scale fusion architectures
-- [ ] Temporal consistency for video sequences
-- [ ] Uncertainty quantification
-- [ ] Edge deployment with TensorRT
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- KITTI dataset for providing autonomous driving data
-- PyTorch team for the deep learning framework
-- MLflow and DVC communities for MLOps tools
